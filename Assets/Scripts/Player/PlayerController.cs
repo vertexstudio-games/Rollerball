@@ -3,24 +3,31 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    // Rigidbody do player
     private Rigidbody rb;
 
+    // Movimento ao longo dos eixos X e Y
     private float movementX;
     private float movementY;
 
+    // Velocidade do player
     [SerializeField] private float speed = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // Armazenando o componente Rigidbody do player a variavel
         rb = GetComponent<Rigidbody>();
     }
     private void FixedUpdate()
     {
+        // Criando o movimento 3D usando os eixos X e Y do input
         Vector3 movement = new Vector3(movementX, 0f, movementY);
         // Adicionando forca ao jogadaor
         rb.AddForce(movement * speed); // Multiplicando a forca pela velocidade
     }
+
+    // Essa função e chamada quando detecta o input de move (Ex.: WASD)
     private void OnMove(InputValue movementValue)
     {
         Vector2 movementVector = movementValue.Get<Vector2>();
