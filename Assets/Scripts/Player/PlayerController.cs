@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,6 +7,8 @@ public class PlayerController : MonoBehaviour
     // Rigidbody do player
     private Rigidbody rb;
 
+    private int count;
+
     // Movimento ao longo dos eixos X e Y
     private float movementX;
     private float movementY;
@@ -13,11 +16,19 @@ public class PlayerController : MonoBehaviour
     // Velocidade do player
     [SerializeField] private float speed = 0;
 
+    [SerializeField] private TextMeshProUGUI countText;
+    [SerializeField] private GameObject winText;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // Armazenando o componente Rigidbody do player a variavel
         rb = GetComponent<Rigidbody>();
+
+        count = 0;
+
+        SetCountText();
+        winText.SetActive(false);
     }
     private void FixedUpdate()
     {
@@ -34,5 +45,31 @@ public class PlayerController : MonoBehaviour
         // Atribuindo variaveis de movimento X e Y
         movementX = movementVector.x;
         movementY = movementVector.y;
+    }
+
+    private void SetCountText()
+    {
+        countText.text = "Count: " + count.ToString();
+
+        if (count >= 12)
+        {
+            winText.SetActive(true);
+        }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // checando se o objeto colidido e o da tag (no caso PickUp)
+        if (other.gameObject.CompareTag("PickUp"))
+        {
+            // Desativando o objeto coledido.
+            other.gameObject.SetActive(false);
+
+            //count++;
+            count = count + 1;
+
+            SetCountText();
+        }
     }
 }
