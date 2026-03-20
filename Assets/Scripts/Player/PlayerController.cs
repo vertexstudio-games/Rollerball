@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI countText;
     [SerializeField] private GameObject winText;
+    [SerializeField] private GameObject restart;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,6 +56,8 @@ public class PlayerController : MonoBehaviour
         if (count >= 12)
         {
             winText.SetActive(true);
+            Destroy(GameObject.FindGameObjectWithTag("Enemy"));
+            restart.SetActive(true);
         }
 
     }
@@ -70,6 +74,21 @@ public class PlayerController : MonoBehaviour
             count = count + 1;
 
             SetCountText();
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+
+            Debug.Log("Teste Collision");
+            this.gameObject.SetActive(false);
+            //Destroy(gameObject);
+
+            winText.gameObject.SetActive(true);
+            winText.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+            restart.SetActive(true);
         }
     }
 }
